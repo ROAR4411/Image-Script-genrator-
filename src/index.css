@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom global overrides to enforce Immersive UI */
+body {
+  font-family: var(--font-sans);
+  background-color: #020617; /* Slate-950 */
+  color: #e2e8f0; /* Slate-200 */
+  margin: 0;
+  height: 100%;
+}
+
+/* Custom Scrollbar - thin & elegant */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Hide scrollbars for specific sections if needed */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Immersive UI Specific Card/Container/Form Styles */
+.sidebar-glass {
+  background-color: rgba(15, 23, 42, 0.4) !important; /* bg-slate-900/40 */
+  backdrop-filter: blur(24px) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important; /* border-white/5 */
+}
+
+.header-glass {
+  background-color: rgba(2, 6, 23, 0.2) !important; /* bg-slate-950/20 */
+  backdrop-filter: blur(8px) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important; /* border-white/5 */
+}
+
+.panel-glass {
+  background-color: rgba(15, 23, 42, 0.6) !important; /* bg-slate-900/60 */
+  backdrop-filter: blur(12px) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important; /* border-white/10 */
+  border-radius: 1rem !important; /* rounded-2xl */
+}
+
+.panel-glass-subtle {
+  background-color: rgba(15, 23, 42, 0.4) !important; /* bg-slate-900/40 */
+  backdrop-filter: blur(8px) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important; /* border-white/5 */
+  border-radius: 1rem !important; /* rounded-2xl */
+}
+
+.input-glass {
+  background-color: rgba(30, 41, 59, 0.5) !important; /* bg-slate-800/50 */
+  border-color: rgba(255, 255, 255, 0.05) !important; /* border-white/5 */
+  color: #ffffff !important;
+  border-radius: 0.75rem !important; /* rounded-xl */
+}
+
+.input-glass:focus {
+  border-color: rgba(99, 102, 241, 0.5) !important; /* focus:border-indigo-500/50 */
+}
+
+.btn-immersive {
+  background-image: linear-gradient(to right, #4f46e5, #7c3aed) !important; /* bg-gradient-to-r from-indigo-600 to-purple-600 */
+  box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.2) !important; /* shadow-xl shadow-indigo-600/20 */
+  transition: all 0.2s ease-in-out !important;
+}
+
+.btn-immersive:hover {
+  background-image: linear-gradient(to right, #6366f1, #8b5cf6) !important; /* hover:from-indigo-500 hover:to-purple-500 */
+}
+
+/* Light Mode Backwards Compatibility Styling */
+.light-mode-theme {
+  --background-color: #f8fafc;
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+.light-mode-theme header {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light-mode-theme aside {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+.light-mode-theme h1, 
+.light-mode-theme h2, 
+.light-mode-theme h3, 
+.light-mode-theme h4 {
+  color: #0f172a !important;
+}
+
+.light-mode-theme select,
+.light-mode-theme input,
+.light-mode-theme textarea {
+  background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+.light-mode-theme p,
+.light-mode-theme span:not(.font-extrabold):not(.font-bold) {
+  color: #334155 !important;
+}
+
+.light-mode-theme #dashboard-view h1 span {
+  background-image: linear-gradient(to right, #2563eb, #4f46e5, #7c3aed) !important;
+}
+
+.light-mode-theme div[id^="hist-"],
+.light-mode-theme #dashboard-view section {
+  border-color: #e2e8f0 !important;
+}
+
+.light-mode-theme .bg-slate-900\/20,
+.light-mode-theme .bg-slate-900\/30,
+.light-mode-theme .bg-slate-950\/60,
+.light-mode-theme .bg-slate-900\/10 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+.light-mode-theme .text-slate-200,
+.light-mode-theme .text-slate-300 {
+  color: #1e293b !important;
+}
+
+.light-mode-theme .text-slate-400,
+.light-mode-theme .text-slate-500 {
+  color: #475569 !important;
+}
+
+.light-mode-theme .bg-slate-950 {
+  background-color: #f1f5f9 !important;
+}
+
+.light-mode-theme select {
+  color: #0f172a !important;
+}
+
+

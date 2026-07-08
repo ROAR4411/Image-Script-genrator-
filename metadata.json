@@ -1,0 +1,6 @@
+{
+  "name": "ScriptForge AI",
+  "description": "Premium AI Creator Platform to generate scripts, viral hooks, engaging titles, stories, social media captions, trending hashtags, and stunning AI images from one dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

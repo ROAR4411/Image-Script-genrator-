@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Entity Validations
+
+    // 1. User Profile Document Validation
+    function isValidUserProfile(data, userId) {
+      return data.uid == userId &&
+             data.name is string && data.name.size() <= 100 &&
+             data.email is string && data.email.size() <= 150 &&
+             data.avatar is string && data.avatar.size() <= 500 &&
+             data.plan is string && (data.plan == 'Free' || data.plan == 'Pro' || data.plan == 'Premium') &&
+             data.memberSince is string && data.memberSince.size() <= 100;
+    }
+
+    // 2. History Item Document Validation
+    function isValidHistoryItem(data, userId) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.userId == userId &&
+             data.tool is string && data.tool.size() <= 50 &&
+             data.title is string && data.title.size() <= 200 &&
+             data.timestamp is string && data.timestamp.size() <= 100 &&
+             data.inputs is map &&
+             data.output is map &&
+             data.isFavorite is bool;
+    }
+
+    // Collection: Users
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId); // Only let a user query their own account
+      
+      allow create: if isOwner(userId) && 
+                       isValidUserProfile(incoming(), userId) &&
+                       incoming().plan == 'Free'; // Force default Free plan on creation
+
+      allow update: if isOwner(userId) && 
+                       isValidUserProfile(incoming(), userId) &&
+                       (
+                         // Action 1: Edit Profile details (only modify name/avatar)
+                         incoming().diff(existing()).affectedKeys().hasOnly(['name', 'avatar']) ||
+                         // Action 2: Subscriptions upgrade (only modify plan & stripeSubscriptionId)
+                         incoming().diff(existing()).affectedKeys().hasOnly(['plan', 'stripeSubscriptionId'])
+                       );
+
+      allow delete: if false; // Users cannot delete their accounts via standard web interface
+
+      // Collection: User's History Subcollection
+      match /history/{historyId} {
+        allow get: if isOwner(userId) && isValidId(historyId);
+        allow list: if isOwner(userId); // Query enforcer is naturally active by requiring parent userId to match request.auth.uid
+        
+        allow create: if isOwner(userId) && 
+                         isValidId(historyId) && 
+                         isValidHistoryItem(incoming(), userId);
+
+        allow update: if isOwner(userId) && 
+                         isValidId(historyId) && 
+                         isValidHistoryItem(incoming(), userId) &&
+                         (
+                           // Action: Toggle Favorite status
+                           incoming().diff(existing()).affectedKeys().hasOnly(['isFavorite'])
+                         );
+
+        allow delete: if isOwner(userId) && isValidId(historyId);
+      }
+    }
+  }
+}

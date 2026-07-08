@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "UserProfile",
+      "description": "Store robust user profile, settings, and subscription plans",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "avatar": { "type": "string" },
+        "plan": { "type": "string", "enum": ["Free", "Pro", "Premium"] },
+        "memberSince": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "stripeSubscriptionId": { "type": "string" }
+      },
+      "required": ["uid", "email", "name", "plan"]
+    },
+    "historyItem": {
+      "title": "HistoryItem",
+      "description": "Store durable user-generated content scripts and creations",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "tool": { "type": "string" },
+        "title": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "inputs": { "type": "object" },
+        "output": { "type": "object" },
+        "isFavorite": { "type": "boolean" }
+      },
+      "required": ["id", "userId", "tool", "title"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "userProfile",
+      "description": "User account documents containing profile and plan metadata"
+    },
+    "users/{userId}/history/{historyId}": {
+      "schema": "historyItem",
+      "description": "User generated outputs and favorites history"
+    }
+  }
+}
