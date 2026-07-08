@@ -8,8 +8,8 @@ interface SettingsViewProps {
   settings: AppSettings;
   setSettings: (settings: AppSettings) => void;
   user: UserProfile;
-  onUpgradePlan: (plan: "Free" | "Pro" | "Enterprise") => void;
-  onNavigateToPricing: () => void;
+  onUpgradePlan: (plan: "Free" | "Pro" | "Enterprise") => any;
+  onNavigateToPricing?: () => void;
 }
 
 export default function SettingsView({
@@ -183,7 +183,7 @@ export default function SettingsView({
             </div>
             <button
               type="button"
-              onClick={onNavigateToPricing}
+              onClick={() => onNavigateToPricing?.()}
               className="rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-3.5 text-xs font-bold transition-all shadow-lg shadow-indigo-500/10 whitespace-nowrap cursor-pointer active:scale-95"
             >
               {user.plan === "Free" || !user.isLoggedIn ? "Upgrade Workspace" : "View Tiers / Billing"}
